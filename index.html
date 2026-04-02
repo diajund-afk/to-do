@@ -5,6 +5,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>before the move</title>
+
+<!-- Sage open-circle half-checkmark icon -->
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180' width='180' height='180'%3E%3Crect width='180' height='180' rx='40' fill='%237d9b76'/%3E%3Ccircle cx='90' cy='90' r='52' fill='none' stroke='white' stroke-width='10' stroke-dasharray='245 80' stroke-dashoffset='60' stroke-linecap='round'/%3E%3Cpolyline points='68%2C95 85%2C115' fill='none' stroke='white' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180' width='180' height='180'%3E%3Crect width='180' height='180' rx='40' fill='%237d9b76'/%3E%3Ccircle cx='90' cy='90' r='52' fill='none' stroke='white' stroke-width='10' stroke-dasharray='245 80' stroke-dashoffset='60' stroke-linecap='round'/%3E%3Cpolyline points='68%2C95 85%2C115' fill='none' stroke='white' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -124,7 +130,6 @@ position: relative;
 .theme-amber    { background: linear-gradient(135deg, #f5f0e4 0%, #e8dfc8 100%); }
 .theme-mint     { background: linear-gradient(135deg, #eef4ee 0%, #d8ecda 100%); }
 
-/* Checkmark circle */
 .done-check {
 position: absolute;
 top: 10px; right: 10px;
@@ -143,7 +148,6 @@ flex-shrink: 0;
 .done-check:active { transform: scale(0.85); }
 .done-check.checked { background: var(–sage); border-color: var(–sage); }
 .done-check .checkmark {
-display: none;
 width: 11px; height: 9px;
 }
 .done-check.checked .checkmark { display: block; }
@@ -154,12 +158,7 @@ border-top: 1px solid #f0ece6;
 }
 
 .task-num {
-font-family: ‘DM Mono’, monospace;
-font-size: 9px;
-color: var(–dusty);
-letter-spacing: 0.2em;
-text-transform: uppercase;
-margin-bottom: 3px;
+font-family: ‘DM Mono’, monospace; font-size: 9px; color: var(–dusty); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 3px;
 }
 
 .task-title {
@@ -214,7 +213,7 @@ text-transform: uppercase;
 
 <div class="progress-wrap">
   <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-  <span class="progress-label" id="progressLabel">0 / 6 done</span>
+  <span class="progress-label" id="progressLabel">0 / 13 done</span>
 </div>
 
 <p class="edit-hint">tap ○ to check off</p>
@@ -239,7 +238,7 @@ text-transform: uppercase;
       </svg>
     </div>
     <div class="card-body">
-      <p class="task-num">01 · bank of america</p>
+      <p class="task-num">bank of america</p>
       <p class="task-title">Resolve dispute</p>
       <p class="task-desc">call / visit to escalate dispute<br>restore account to target balance</p>
       <span class="task-target">→ ~$227k savings</span>
@@ -266,7 +265,7 @@ text-transform: uppercase;
       </svg>
     </div>
     <div class="card-body">
-      <p class="task-num">02 · chase</p>
+      <p class="task-num">chase</p>
       <p class="task-title">Deposit check</p>
       <p class="task-desc">deposit $3k WF balance check<br>increase accounts balances</p>
       <span class="task-target">→ ~$22k checking</span>
@@ -294,7 +293,7 @@ text-transform: uppercase;
       </svg>
     </div>
     <div class="card-body">
-      <p class="task-num">03 · pharmacies</p>
+      <p class="task-num">pharmacies</p>
       <p class="task-title">Fill Adderall IR Rx</p>
       <p class="task-desc">① Costco<br>② Walgreens</p>
       <span class="task-target">→ 2–3 month supply</span>
@@ -321,7 +320,7 @@ text-transform: uppercase;
       </svg>
     </div>
     <div class="card-body">
-      <p class="task-num">04 · beauty</p>
+      <p class="task-num">beauty</p>
       <p class="task-title">Hair appointment</p>
       <p class="task-desc">book extension / styling appointment</p>
       <span class="task-target">→ book in LA</span>
@@ -349,7 +348,7 @@ text-transform: uppercase;
       </svg>
     </div>
     <div class="card-body">
-      <p class="task-num">05 · storage</p>
+      <p class="task-num">storage</p>
       <p class="task-title">Move storage unit</p>
       <p class="task-desc">OC units: move / consolidate<br>DTLA: vacate A2023 · N Main loc</p>
       <span class="task-target">→ ExtraSpace</span>
@@ -376,7 +375,7 @@ text-transform: uppercase;
       </svg>
     </div>
     <div class="card-body">
-      <p class="task-num">06 · benefits</p>
+      <p class="task-num">benefits</p>
       <p class="task-title">Retrieve EBT funds</p>
       <p class="task-desc">reclaim benefits withdrawn<br>due to account inactivity</p>
       <span class="task-target">→ CalFresh / SNAP</span>
@@ -403,7 +402,7 @@ text-transform: uppercase;
       </svg>
     </div>
     <div class="card-body">
-      <p class="task-num">07 · repairs</p>
+      <p class="task-num">repairs</p>
       <p class="task-title">Send iPhone 16</p>
       <p class="task-desc">ship to MDRepairs to<br>recover photos</p>
       <span class="task-target">→ MDRepairs</span>
@@ -423,7 +422,6 @@ text-transform: uppercase;
         <rect x="28" y="14" width="34" height="52" rx="4" stroke="#C4A882" stroke-width="1" fill="none"/>
         <line x1="28" y1="22" x2="62" y2="22" stroke="#C4A882" stroke-width="0.75"/>
         <line x1="28" y1="57" x2="62" y2="57" stroke="#C4A882" stroke-width="0.75"/>
-        <!-- cracked screen lines -->
         <line x1="36" y1="28" x2="48" y2="42" stroke="#C4A882" stroke-width="0.75" stroke-linecap="round"/>
         <line x1="48" y1="42" x2="42" y2="54" stroke="#C4A882" stroke-width="0.75" stroke-linecap="round"/>
         <line x1="48" y1="42" x2="56" y2="50" stroke="#C4A882" stroke-width="0.75" stroke-linecap="round"/>
@@ -431,7 +429,7 @@ text-transform: uppercase;
       </svg>
     </div>
     <div class="card-body">
-      <p class="task-num">08 · devices</p>
+      <p class="task-num">devices</p>
       <p class="task-title">Fix iPhone Air screen</p>
       <p class="task-desc">repair / replace display<br>then sell</p>
       <span class="task-target">→ Apple Store · then sell</span>
@@ -448,10 +446,8 @@ text-transform: uppercase;
         </svg>
       </button>
       <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
-        <!-- PE: clean white capsule — purity / minimal -->
         <rect x="28" y="30" width="34" height="44" rx="6" stroke="#8A9E85" stroke-width="1" fill="#f0f7f0"/>
         <rect x="32" y="25" width="26" height="12" rx="3" stroke="#8A9E85" stroke-width="0.75" fill="#d8ecda"/>
-        <!-- capsule pill inside -->
         <rect x="35" y="42" width="20" height="10" rx="5" fill="#c8e0c8" stroke="#8A9E85" stroke-width="0.5"/>
         <line x1="45" y1="42" x2="45" y2="52" stroke="#8A9E85" stroke-width="0.5"/>
         <line x1="35" y1="58" x2="55" y2="58" stroke="#8A9E85" stroke-width="0.4"/>
@@ -460,7 +456,7 @@ text-transform: uppercase;
       </svg>
     </div>
     <div class="card-body">
-      <p class="task-num">09 · supplements</p>
+      <p class="task-num">supplements</p>
       <p class="task-title">Pure Encapsulations</p>
       <p class="task-desc">order prev. ordered supplements<br>return ones from Ubuy</p>
       <span class="task-target">→ pureencapsulations.com</span>
@@ -477,10 +473,8 @@ text-transform: uppercase;
         </svg>
       </button>
       <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
-        <!-- Oriveda: functional mushroom -->
         <path d="M30 52 Q30 35 45 32 Q60 35 60 52 Z" fill="#dde6dd" stroke="#8A9E85" stroke-width="1"/>
         <rect x="40" y="52" width="10" height="18" rx="2" fill="#dde6dd" stroke="#8A9E85" stroke-width="1"/>
-        <!-- gills -->
         <line x1="35" y1="52" x2="38" y2="44" stroke="#8A9E85" stroke-width="0.5"/>
         <line x1="40" y1="52" x2="41" y2="40" stroke="#8A9E85" stroke-width="0.5"/>
         <line x1="45" y1="52" x2="45" y2="38" stroke="#8A9E85" stroke-width="0.5"/>
@@ -490,7 +484,7 @@ text-transform: uppercase;
       </svg>
     </div>
     <div class="card-body">
-      <p class="task-num">10 · supplements</p>
+      <p class="task-num">supplements</p>
       <p class="task-title">Oriveda</p>
       <p class="task-desc">order all mushrooms</p>
       <span class="task-target">→ oriveda.com</span>
@@ -507,13 +501,10 @@ text-transform: uppercase;
         </svg>
       </button>
       <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
-        <!-- Cosmic Nootropics: brain + cosmos -->
         <circle cx="45" cy="42" r="18" fill="#f0edf8" stroke="#9B8EC4" stroke-width="1"/>
-        <!-- brain folds -->
         <path d="M34 38 Q38 34 42 38 Q46 42 50 38 Q54 34 58 38" stroke="#9B8EC4" stroke-width="0.75" fill="none" stroke-linecap="round"/>
         <path d="M34 44 Q38 40 42 44 Q46 48 50 44 Q54 40 58 44" stroke="#9B8EC4" stroke-width="0.75" fill="none" stroke-linecap="round"/>
         <path d="M36 50 Q40 46 44 50 Q48 54 52 50 Q56 46 58 50" stroke="#9B8EC4" stroke-width="0.75" fill="none" stroke-linecap="round"/>
-        <!-- stars -->
         <circle cx="28" cy="22" r="1.5" fill="#C4BADE"/>
         <circle cx="62" cy="18" r="1" fill="#C4BADE"/>
         <circle cx="20" cy="55" r="1" fill="#C4BADE"/>
@@ -522,7 +513,7 @@ text-transform: uppercase;
       </svg>
     </div>
     <div class="card-body">
-      <p class="task-num">11 · supplements</p>
+      <p class="task-num">supplements</p>
       <p class="task-title">Cosmic Nootropics</p>
       <p class="task-desc">order refills of nootropic stacks</p>
       <span class="task-target">→ cosmicnootropic.com</span>
@@ -539,7 +530,6 @@ text-transform: uppercase;
         </svg>
       </button>
       <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
-        <!-- lock icon -->
         <rect x="30" y="42" width="30" height="24" rx="3" fill="#F0E6CE" stroke="#C4A882" stroke-width="1"/>
         <path d="M36 42 Q36 28 45 28 Q54 28 54 42" stroke="#C4A882" stroke-width="1" fill="none"/>
         <circle cx="45" cy="54" r="3" stroke="#C4A882" stroke-width="1" fill="none"/>
@@ -548,7 +538,7 @@ text-transform: uppercase;
       </svg>
     </div>
     <div class="card-body">
-      <p class="task-num">12 · storage</p>
+      <p class="task-num">storage</p>
       <p class="task-title">Lock & Leave move-out</p>
       <p class="task-desc">call / visit · move out of<br>units 1186 + 2060<br>pay March only · remove April fees</p>
       <span class="task-target">→ units 1186 & 2060</span>
@@ -565,19 +555,17 @@ text-transform: uppercase;
         </svg>
       </button>
       <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
-        <!-- calendar / appointment -->
         <rect x="22" y="28" width="46" height="38" rx="3" fill="#f0edf8" stroke="#9B8EC4" stroke-width="1"/>
         <line x1="22" y1="38" x2="68" y2="38" stroke="#9B8EC4" stroke-width="0.75"/>
         <rect x="33" y="22" width="6" height="12" rx="2" fill="#e4dff0" stroke="#9B8EC4" stroke-width="0.75"/>
         <rect x="51" y="22" width="6" height="12" rx="2" fill="#e4dff0" stroke="#9B8EC4" stroke-width="0.75"/>
-        <!-- cross / medical -->
         <line x1="45" y1="46" x2="45" y2="58" stroke="#9B8EC4" stroke-width="1.5" stroke-linecap="round"/>
         <line x1="39" y1="52" x2="51" y2="52" stroke="#9B8EC4" stroke-width="1.5" stroke-linecap="round"/>
         <text x="45" y="78" text-anchor="middle" font-family="Georgia" font-size="7" fill="#9B8EC4" font-style="italic">zocdoc</text>
       </svg>
     </div>
     <div class="card-body">
-      <p class="task-num">13 · health</p>
+      <p class="task-num">health</p>
       <p class="task-title">ZocDoc psychiatrist</p>
       <p class="task-desc">book appt via ZocDoc<br>for Adderall Rx refills</p>
       <span class="task-target">→ ZocDoc · psychiatrist</span>
@@ -624,7 +612,6 @@ text-transform: uppercase;
     text-transform: uppercase;
   }
 
-  /* Timeline */
   .timeline {
     position: relative;
     padding-left: 24px;
@@ -654,7 +641,6 @@ text-transform: uppercase;
   .day-block:nth-child(8) { animation-delay: 0.32s; }
   .day-block:nth-child(9) { animation-delay: 0.36s; }
 
-  /* Dot on timeline */
   .day-dot {
     position: absolute;
     left: -21px;
@@ -666,9 +652,9 @@ text-transform: uppercase;
     border: 1.5px solid var(--cream);
     box-shadow: 0 0 0 1px var(--warm);
   }
-  .day-dot.depart { background: var(--sage); box-shadow: 0 0 0 1px var(--sage); }
-  .day-dot.blocked { background: var(--dusty); box-shadow: 0 0 0 1px var(--dusty); }
-  .day-dot.buffer { background: var(--light-sage); box-shadow: 0 0 0 1px var(--dusty); }
+  .day-dot.depart  { background: var(--sage);       box-shadow: 0 0 0 1px var(--sage); }
+  .day-dot.blocked { background: var(--dusty);      box-shadow: 0 0 0 1px var(--dusty); }
+  .day-dot.buffer  { background: var(--light-sage); box-shadow: 0 0 0 1px var(--dusty); }
 
   .day-card {
     background: white;
@@ -713,12 +699,12 @@ text-transform: uppercase;
     text-transform: uppercase;
     white-space: nowrap;
   }
-  .badge-online  { background: var(--light-sage); color: var(--accent); }
-  .badge-inperson{ background: #f0e8d8; color: var(--warm-brown, #8C6E52); }
-  .badge-blocked { background: #f0ece6; color: var(--dusty); }
-  .badge-depart  { background: #2A2A25; color: #F5F0E8; }
-  .badge-buffer  { background: var(--light-sage); color: var(--dusty); }
-  .badge-mixed   { background: #eef1ee; color: var(--sage); }
+  .badge-online   { background: var(--light-sage); color: var(--accent); }
+  .badge-inperson { background: #f0e8d8; color: #8C6E52; }
+  .badge-blocked  { background: #f0ece6; color: var(--dusty); }
+  .badge-depart   { background: #2A2A25; color: #F5F0E8; }
+  .badge-buffer   { background: var(--light-sage); color: var(--dusty); }
+  .badge-mixed    { background: #eef1ee; color: var(--sage); }
 
   .day-tasks {
     padding: 12px 18px 14px;
@@ -738,12 +724,7 @@ text-transform: uppercase;
     letter-spacing: 0.02em;
   }
 
-  .day-task-item .bullet {
-    color: var(--warm);
-    margin-top: 1px;
-    flex-shrink: 0;
-    font-size: 10px;
-  }
+  .day-task-item .bullet { color: var(--warm); margin-top: 1px; flex-shrink: 0; font-size: 10px; }
   .day-task-item.blocked-item .bullet { color: var(--dusty); }
   .day-task-item .time-tag {
     color: var(--dusty);
@@ -765,18 +746,13 @@ text-transform: uppercase;
     line-height: 1.5;
   }
 
-  /* Depart card special */
-  .day-card.depart-card {
-    background: var(--dark);
-  }
-  .day-card.depart-card .day-card-header {
-    border-bottom-color: rgba(255,255,255,0.08);
-  }
-  .day-card.depart-card .day-date { color: rgba(245,240,232,0.45); }
+  .day-card.depart-card { background: var(--dark); }
+  .day-card.depart-card .day-card-header { border-bottom-color: rgba(255,255,255,0.08); }
+  .day-card.depart-card .day-date  { color: rgba(245,240,232,0.45); }
   .day-card.depart-card .day-title { color: #F5F0E8; }
   .day-card.depart-card .day-task-item { color: rgba(245,240,232,0.7); }
-  .day-card.depart-card .bullet { color: var(--warm); }
-  .day-card.depart-card .day-note { color: rgba(245,240,232,0.35); }
+  .day-card.depart-card .bullet    { color: var(--warm); }
+  .day-card.depart-card .day-note  { color: rgba(245,240,232,0.35); }
 
   .sched-footer {
     text-align: center;
@@ -825,7 +801,7 @@ text-transform: uppercase;
   </div>
 </div>
 
-<!-- April 4 -->
+<!-- April 3 -->
 <div class="day-block">
   <div class="day-dot"></div>
   <div class="day-card">
@@ -844,7 +820,7 @@ text-transform: uppercase;
   </div>
 </div>
 
-<!-- April 5 -->
+<!-- April 4 -->
 <div class="day-block">
   <div class="day-dot"></div>
   <div class="day-card">
@@ -861,7 +837,7 @@ text-transform: uppercase;
   </div>
 </div>
 
-<!-- April 6 -->
+<!-- April 5 -->
 <div class="day-block">
   <div class="day-dot"></div>
   <div class="day-card">
@@ -878,7 +854,7 @@ text-transform: uppercase;
   </div>
 </div>
 
-<!-- April 7 -->
+<!-- April 6 -->
 <div class="day-block">
   <div class="day-dot"></div>
   <div class="day-card">
@@ -897,7 +873,7 @@ text-transform: uppercase;
   </div>
 </div>
 
-<!-- April 8 -->
+<!-- April 7 -->
 <div class="day-block">
   <div class="day-dot buffer"></div>
   <div class="day-card">
@@ -914,7 +890,7 @@ text-transform: uppercase;
   </div>
 </div>
 
-<!-- April 9 -->
+<!-- April 8 -->
 <div class="day-block">
   <div class="day-dot buffer"></div>
   <div class="day-card">
