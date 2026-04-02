@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>before the move</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F5F0E8;
+    --sage: #8A9E85;
+    --dark: #2A2A25;
+    --warm: #C4A882;
+    --dusty: #B5A99A;
+    --light-sage: #D4DDD1;
+    --accent: #7A8C6E;
+  }
+
+- { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+background: var(–cream);
+font-family: ‘Cormorant Garamond’, serif;
+min-height: 100vh;
+padding: 48px 24px 80px;
+color: var(–dark);
+}
+
+header { text-align: center; margin-bottom: 48px; }
+
+header .eyebrow {
+font-family: ‘DM Mono’, monospace;
+font-size: 10px;
+letter-spacing: 0.25em;
+color: var(–dusty);
+text-transform: uppercase;
+margin-bottom: 8px;
+}
+
+header h1 {
+font-size: clamp(36px, 8vw, 64px);
+font-weight: 300;
+font-style: italic;
+color: var(–dark);
+line-height: 1.1;
+}
+
+header .subtitle {
+font-family: ‘DM Mono’, monospace;
+font-size: 9px;
+color: var(–sage);
+letter-spacing: 0.2em;
+margin-top: 10px;
+text-transform: uppercase;
+}
+
+.divider { width: 40px; height: 1px; background: var(–warm); margin: 18px auto; }
+
+.progress-wrap {
+max-width: 700px;
+margin: 0 auto 28px;
+display: flex;
+align-items: center;
+gap: 12px;
+}
+.progress-bar { flex: 1; height: 2px; background: var(–light-sage); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(–sage); border-radius: 2px; transition: width 0.5s cubic-bezier(0.16,1,0.3,1); width: 0%; }
+.progress-label { font-family: ‘DM Mono’, monospace; font-size: 9px; color: var(–dusty); letter-spacing: 0.15em; white-space: nowrap; }
+
+.edit-hint {
+text-align: center;
+font-family: ‘DM Mono’, monospace;
+font-size: 9px;
+color: var(–dusty);
+letter-spacing: 0.15em;
+margin-bottom: 20px;
+opacity: 0.7;
+}
+
+.grid {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 14px;
+max-width: 700px;
+margin: 0 auto;
+}
+
+.card {
+background: white;
+border-radius: 6px;
+overflow: hidden;
+position: relative;
+box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease, opacity 0.4s ease;
+animation: fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) both;
+}
+.card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,0.09); }
+.card.done { opacity: 0.35; filter: grayscale(0.5); }
+
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(18px); }
+to   { opacity: 1; transform: translateY(0); }
+}
+.card:nth-child(1) { animation-delay: 0.05s; }
+.card:nth-child(2) { animation-delay: 0.10s; }
+.card:nth-child(3) { animation-delay: 0.15s; }
+.card:nth-child(4) { animation-delay: 0.20s; }
+.card:nth-child(5) { animation-delay: 0.25s; }
+.card:nth-child(6) { animation-delay: 0.30s; }
+
+.card-visual {
+height: 120px;
+display: flex;
+align-items: center;
+justify-content: center;
+position: relative;
+}
+
+.theme-warm     { background: linear-gradient(135deg, #f8f4ee 0%, #ede5d8 100%); }
+.theme-sage     { background: linear-gradient(135deg, #eef1ee 0%, #dde6dd 100%); }
+.theme-lavender { background: linear-gradient(135deg, #f0edf8 0%, #e4dff0 100%); }
+.theme-blush    { background: linear-gradient(135deg, #f8f2ee 0%, #ede0d6 100%); }
+.theme-amber    { background: linear-gradient(135deg, #f5f0e4 0%, #e8dfc8 100%); }
+.theme-mint     { background: linear-gradient(135deg, #eef4ee 0%, #d8ecda 100%); }
+
+/* Checkmark circle */
+.done-check {
+position: absolute;
+top: 10px; right: 10px;
+width: 22px; height: 22px;
+border-radius: 50%;
+border: 1.5px solid var(–dusty);
+background: rgba(255,255,255,0.88);
+cursor: pointer;
+z-index: 10;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: background 0.2s, border-color 0.2s, transform 0.15s;
+flex-shrink: 0;
+}
+.done-check:active { transform: scale(0.85); }
+.done-check.checked { background: var(–sage); border-color: var(–sage); }
+.done-check .checkmark {
+display: none;
+width: 11px; height: 9px;
+}
+.done-check.checked .checkmark { display: block; }
+
+.card-body {
+padding: 14px 16px 16px;
+border-top: 1px solid #f0ece6;
+}
+
+.task-num {
+font-family: ‘DM Mono’, monospace;
+font-size: 9px;
+color: var(–dusty);
+letter-spacing: 0.2em;
+text-transform: uppercase;
+margin-bottom: 3px;
+}
+
+.task-title {
+font-size: 16px;
+font-weight: 400;
+font-style: italic;
+color: var(–dark);
+line-height: 1.2;
+margin-bottom: 5px;
+}
+
+.task-desc {
+font-family: ‘DM Mono’, monospace;
+font-size: 9px;
+color: var(–dusty);
+line-height: 1.6;
+letter-spacing: 0.02em;
+}
+
+.task-target {
+display: inline-block;
+margin-top: 8px;
+font-family: ‘DM Mono’, monospace;
+font-size: 9px;
+color: var(–accent);
+background: var(–light-sage);
+padding: 3px 8px;
+border-radius: 2px;
+letter-spacing: 0.1em;
+}
+
+footer {
+text-align: center;
+margin-top: 40px;
+font-family: ‘DM Mono’, monospace;
+font-size: 9px;
+color: var(–dusty);
+letter-spacing: 0.2em;
+text-transform: uppercase;
+}
+</style>
+
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">before the move</p>
+  <h1>to do</h1>
+  <div class="divider"></div>
+  <p class="subtitle">LA → Doha · Pre-departure checklist</p>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <span class="progress-label" id="progressLabel">0 / 6 done</span>
+</div>
+
+<p class="edit-hint">tap ○ to check off</p>
+
+<div class="grid">
+
+  <!-- 1. BOA -->
+
+  <div class="card" id="c1">
+    <div class="card-visual theme-warm">
+      <button class="done-check" onclick="toggle('c1', this)">
+        <svg class="checkmark" viewBox="0 0 11 9" fill="none">
+          <polyline points="1,4.5 4,7.5 10,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
+        <circle cx="45" cy="45" r="32" stroke="#C4A882" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="45" y="38" text-anchor="middle" font-family="Georgia" font-size="11" fill="#2A2A25" font-style="italic">resolve</text>
+        <text x="45" y="52" text-anchor="middle" font-family="monospace" font-size="18" fill="#C4A882">$$$</text>
+        <line x1="28" y1="60" x2="62" y2="60" stroke="#C4A882" stroke-width="0.5"/>
+        <text x="45" y="70" text-anchor="middle" font-family="monospace" font-size="8" fill="#B5A99A">dispute</text>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="task-num">01 · bank of america</p>
+      <p class="task-title">Resolve dispute</p>
+      <p class="task-desc">call / visit to escalate dispute<br>restore account to target balance</p>
+      <span class="task-target">→ ~$227k savings</span>
+    </div>
+  </div>
+
+  <!-- 2. Chase -->
+
+  <div class="card" id="c2">
+    <div class="card-visual theme-sage">
+      <button class="done-check" onclick="toggle('c2', this)">
+        <svg class="checkmark" viewBox="0 0 11 9" fill="none">
+          <polyline points="1,4.5 4,7.5 10,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
+        <rect x="22" y="30" width="46" height="30" rx="2" stroke="#8A9E85" stroke-width="1"/>
+        <line x1="22" y1="38" x2="68" y2="38" stroke="#8A9E85" stroke-width="0.5"/>
+        <line x1="30" y1="46" x2="50" y2="46" stroke="#D4DDD1" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="30" y1="51" x2="44" y2="51" stroke="#D4DDD1" stroke-width="1" stroke-linecap="round"/>
+        <line x1="45" y1="16" x2="45" y2="26" stroke="#8A9E85" stroke-width="1" stroke-linecap="round"/>
+        <polyline points="40,22 45,27 50,22" stroke="#8A9E85" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="45" y="76" text-anchor="middle" font-family="monospace" font-size="8" fill="#8A9E85">deposit</text>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="task-num">02 · chase</p>
+      <p class="task-title">Deposit check</p>
+      <p class="task-desc">deposit $3k WF balance check<br>increase accounts balances</p>
+      <span class="task-target">→ ~$22k checking</span>
+    </div>
+  </div>
+
+  <!-- 3. Rx -->
+
+  <div class="card" id="c3">
+    <div class="card-visual theme-lavender">
+      <button class="done-check" onclick="toggle('c3', this)">
+        <svg class="checkmark" viewBox="0 0 11 9" fill="none">
+          <polyline points="1,4.5 4,7.5 10,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
+        <rect x="25" y="36" width="40" height="18" rx="9" fill="#E8E2F4" stroke="#9B8EC4" stroke-width="1"/>
+        <line x1="45" y1="36" x2="45" y2="54" stroke="#9B8EC4" stroke-width="0.75"/>
+        <text x="35" y="49" text-anchor="middle" font-family="monospace" font-size="9" fill="#9B8EC4">Rx</text>
+        <text x="55" y="49" text-anchor="middle" font-family="monospace" font-size="9" fill="#C4BADE">×3</text>
+        <ellipse cx="30" cy="66" rx="6" ry="3.5" fill="none" stroke="#C4BADE" stroke-width="0.75"/>
+        <ellipse cx="45" cy="68" rx="6" ry="3.5" fill="none" stroke="#C4BADE" stroke-width="0.75"/>
+        <ellipse cx="60" cy="66" rx="6" ry="3.5" fill="none" stroke="#C4BADE" stroke-width="0.75"/>
+        <text x="45" y="24" text-anchor="middle" font-family="Georgia" font-size="10" fill="#7A6FA0" font-style="italic">fill before leaving</text>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="task-num">03 · pharmacies</p>
+      <p class="task-title">Fill Adderall IR Rx</p>
+      <p class="task-desc">① Costco<br>② Walgreens</p>
+      <span class="task-target">→ 2–3 month supply</span>
+    </div>
+  </div>
+
+  <!-- 4. Hair -->
+
+  <div class="card" id="c4">
+    <div class="card-visual theme-blush">
+      <button class="done-check" onclick="toggle('c4', this)">
+        <svg class="checkmark" viewBox="0 0 11 9" fill="none">
+          <polyline points="1,4.5 4,7.5 10,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
+        <path d="M30 20 Q38 35 34 55 Q32 65 36 75" stroke="#C4A882" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M38 18 Q46 34 42 54 Q40 65 44 74" stroke="#B5956A" stroke-width="1" fill="none" stroke-linecap="round"/>
+        <path d="M46 19 Q52 36 50 56 Q48 66 52 74" stroke="#C4A882" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M54 22 Q58 38 56 57 Q55 66 58 74" stroke="#D4B896" stroke-width="1" fill="none" stroke-linecap="round"/>
+        <circle cx="68" cy="28" r="6" stroke="#B5A99A" stroke-width="0.75" fill="none"/>
+        <line x1="64" y1="24" x2="72" y2="32" stroke="#B5A99A" stroke-width="0.75"/>
+        <line x1="64" y1="32" x2="72" y2="24" stroke="#B5A99A" stroke-width="0.75"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="task-num">04 · beauty</p>
+      <p class="task-title">Hair appointment</p>
+      <p class="task-desc">book extension / styling appointment</p>
+      <span class="task-target">→ book in LA</span>
+    </div>
+  </div>
+
+  <!-- 5. Storage -->
+
+  <div class="card" id="c5">
+    <div class="card-visual theme-amber">
+      <button class="done-check" onclick="toggle('c5', this)">
+        <svg class="checkmark" viewBox="0 0 11 9" fill="none">
+          <polyline points="1,4.5 4,7.5 10,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
+        <rect x="20" y="50" width="50" height="22" rx="1" fill="#F0E6CE" stroke="#C4A882" stroke-width="1"/>
+        <rect x="24" y="34" width="42" height="18" rx="1" fill="#EAD9B8" stroke="#C4A882" stroke-width="1"/>
+        <rect x="28" y="21" width="34" height="15" rx="1" fill="#E4D0A8" stroke="#C4A882" stroke-width="1"/>
+        <line x1="45" y1="50" x2="45" y2="72" stroke="#B5956A" stroke-width="0.75"/>
+        <line x1="45" y1="34" x2="45" y2="52" stroke="#B5956A" stroke-width="0.75"/>
+        <line x1="45" y1="21" x2="45" y2="36" stroke="#B5956A" stroke-width="0.75"/>
+        <line x1="75" y1="55" x2="75" y2="35" stroke="#C4A882" stroke-width="1" stroke-dasharray="2 2"/>
+        <polyline points="71,40 75,34 79,40" stroke="#C4A882" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="task-num">05 · storage</p>
+      <p class="task-title">Move storage unit</p>
+      <p class="task-desc">OC units: move / consolidate<br>DTLA: vacate A2023 · N Main loc</p>
+      <span class="task-target">→ ExtraSpace</span>
+    </div>
+  </div>
+
+  <!-- 6. EBT -->
+
+  <div class="card" id="c6">
+    <div class="card-visual theme-mint">
+      <button class="done-check" onclick="toggle('c6', this)">
+        <svg class="checkmark" viewBox="0 0 11 9" fill="none">
+          <polyline points="1,4.5 4,7.5 10,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
+        <rect x="18" y="32" width="54" height="34" rx="4" fill="#E4F0E4" stroke="#8A9E85" stroke-width="1"/>
+        <rect x="18" y="40" width="54" height="8" fill="#D4DDD1"/>
+        <rect x="26" y="54" width="12" height="8" rx="1" stroke="#8A9E85" stroke-width="0.75" fill="none"/>
+        <text x="62" y="61" text-anchor="middle" font-family="monospace" font-size="9" fill="#8A9E85">EBT</text>
+        <line x1="45" y1="20" x2="45" y2="28" stroke="#8A9E85" stroke-width="1" stroke-linecap="round"/>
+        <polyline points="40,24 45,29 50,24" stroke="#8A9E85" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="45" y="16" text-anchor="middle" font-family="Georgia" font-size="9" fill="#7A8C6E" font-style="italic">retrieve funds</text>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="task-num">06 · benefits</p>
+      <p class="task-title">Retrieve EBT funds</p>
+      <p class="task-desc">reclaim benefits withdrawn<br>due to account inactivity</p>
+      <span class="task-target">→ CalFresh / SNAP</span>
+    </div>
+  </div>
+
+  <!-- 7. Send iPhone 16 to MDRepairs -->
+
+  <div class="card" id="c7">
+    <div class="card-visual theme-blush">
+      <button class="done-check" onclick="toggle('c7', this)">
+        <svg class="checkmark" viewBox="0 0 11 9" fill="none">
+          <polyline points="1,4.5 4,7.5 10,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
+        <rect x="32" y="15" width="26" height="46" rx="4" stroke="#C4A882" stroke-width="1" fill="none"/>
+        <line x1="32" y1="24" x2="58" y2="24" stroke="#C4A882" stroke-width="0.75"/>
+        <line x1="32" y1="52" x2="58" y2="52" stroke="#C4A882" stroke-width="0.75"/>
+        <circle cx="45" cy="57" r="2" stroke="#C4A882" stroke-width="0.75" fill="none"/>
+        <line x1="45" y1="65" x2="45" y2="75" stroke="#B5956A" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 2"/>
+        <polyline points="40,70 45,76 50,70" stroke="#B5956A" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="45" y="85" text-anchor="middle" font-family="monospace" font-size="7" fill="#B5A99A">send</text>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="task-num">07 · repairs</p>
+      <p class="task-title">Send iPhone 16</p>
+      <p class="task-desc">ship to MDRepairs to<br>recover photos</p>
+      <span class="task-target">→ MDRepairs</span>
+    </div>
+  </div>
+
+  <!-- 8. Repair/replace iPhone Air screen -->
+
+  <div class="card" id="c8">
+    <div class="card-visual theme-warm">
+      <button class="done-check" onclick="toggle('c8', this)">
+        <svg class="checkmark" viewBox="0 0 11 9" fill="none">
+          <polyline points="1,4.5 4,7.5 10,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
+        <rect x="28" y="14" width="34" height="52" rx="4" stroke="#C4A882" stroke-width="1" fill="none"/>
+        <line x1="28" y1="22" x2="62" y2="22" stroke="#C4A882" stroke-width="0.75"/>
+        <line x1="28" y1="57" x2="62" y2="57" stroke="#C4A882" stroke-width="0.75"/>
+        <!-- cracked screen lines -->
+        <line x1="36" y1="28" x2="48" y2="42" stroke="#C4A882" stroke-width="0.75" stroke-linecap="round"/>
+        <line x1="48" y1="42" x2="42" y2="54" stroke="#C4A882" stroke-width="0.75" stroke-linecap="round"/>
+        <line x1="48" y1="42" x2="56" y2="50" stroke="#C4A882" stroke-width="0.75" stroke-linecap="round"/>
+        <text x="45" y="76" text-anchor="middle" font-family="Georgia" font-size="9" fill="#B5A99A" font-style="italic">then sell</text>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="task-num">08 · devices</p>
+      <p class="task-title">Fix iPhone Air screen</p>
+      <p class="task-desc">repair / replace display<br>then sell</p>
+      <span class="task-target">→ Apple Store · then sell</span>
+    </div>
+  </div>
+
+  <!-- 9. Pure Encapsulations -->
+
+  <div class="card" id="c9">
+    <div class="card-visual theme-mint">
+      <button class="done-check" onclick="toggle('c9', this)">
+        <svg class="checkmark" viewBox="0 0 11 9" fill="none">
+          <polyline points="1,4.5 4,7.5 10,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
+        <!-- PE: clean white capsule — purity / minimal -->
+        <rect x="28" y="30" width="34" height="44" rx="6" stroke="#8A9E85" stroke-width="1" fill="#f0f7f0"/>
+        <rect x="32" y="25" width="26" height="12" rx="3" stroke="#8A9E85" stroke-width="0.75" fill="#d8ecda"/>
+        <!-- capsule pill inside -->
+        <rect x="35" y="42" width="20" height="10" rx="5" fill="#c8e0c8" stroke="#8A9E85" stroke-width="0.5"/>
+        <line x1="45" y1="42" x2="45" y2="52" stroke="#8A9E85" stroke-width="0.5"/>
+        <line x1="35" y1="58" x2="55" y2="58" stroke="#8A9E85" stroke-width="0.4"/>
+        <line x1="35" y1="63" x2="50" y2="63" stroke="#8A9E85" stroke-width="0.4"/>
+        <text x="45" y="80" text-anchor="middle" font-family="Georgia" font-size="7" fill="#8A9E85" font-style="italic">pure</text>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="task-num">09 · supplements</p>
+      <p class="task-title">Pure Encapsulations</p>
+      <p class="task-desc">order prev. ordered supplements<br>return ones from Ubuy</p>
+      <span class="task-target">→ pureencapsulations.com</span>
+    </div>
+  </div>
+
+  <!-- 10. Oriveda -->
+
+  <div class="card" id="c10">
+    <div class="card-visual theme-sage">
+      <button class="done-check" onclick="toggle('c10', this)">
+        <svg class="checkmark" viewBox="0 0 11 9" fill="none">
+          <polyline points="1,4.5 4,7.5 10,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
+        <!-- Oriveda: functional mushroom -->
+        <path d="M30 52 Q30 35 45 32 Q60 35 60 52 Z" fill="#dde6dd" stroke="#8A9E85" stroke-width="1"/>
+        <rect x="40" y="52" width="10" height="18" rx="2" fill="#dde6dd" stroke="#8A9E85" stroke-width="1"/>
+        <!-- gills -->
+        <line x1="35" y1="52" x2="38" y2="44" stroke="#8A9E85" stroke-width="0.5"/>
+        <line x1="40" y1="52" x2="41" y2="40" stroke="#8A9E85" stroke-width="0.5"/>
+        <line x1="45" y1="52" x2="45" y2="38" stroke="#8A9E85" stroke-width="0.5"/>
+        <line x1="50" y1="52" x2="49" y2="40" stroke="#8A9E85" stroke-width="0.5"/>
+        <line x1="55" y1="52" x2="52" y2="44" stroke="#8A9E85" stroke-width="0.5"/>
+        <text x="45" y="80" text-anchor="middle" font-family="Georgia" font-size="7" fill="#8A9E85" font-style="italic">oriveda</text>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="task-num">10 · supplements</p>
+      <p class="task-title">Oriveda</p>
+      <p class="task-desc">order all mushrooms</p>
+      <span class="task-target">→ oriveda.com</span>
+    </div>
+  </div>
+
+  <!-- 11. Cosmic Nootropics -->
+
+  <div class="card" id="c11">
+    <div class="card-visual theme-lavender">
+      <button class="done-check" onclick="toggle('c11', this)">
+        <svg class="checkmark" viewBox="0 0 11 9" fill="none">
+          <polyline points="1,4.5 4,7.5 10,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
+        <!-- Cosmic Nootropics: brain + cosmos -->
+        <circle cx="45" cy="42" r="18" fill="#f0edf8" stroke="#9B8EC4" stroke-width="1"/>
+        <!-- brain folds -->
+        <path d="M34 38 Q38 34 42 38 Q46 42 50 38 Q54 34 58 38" stroke="#9B8EC4" stroke-width="0.75" fill="none" stroke-linecap="round"/>
+        <path d="M34 44 Q38 40 42 44 Q46 48 50 44 Q54 40 58 44" stroke="#9B8EC4" stroke-width="0.75" fill="none" stroke-linecap="round"/>
+        <path d="M36 50 Q40 46 44 50 Q48 54 52 50 Q56 46 58 50" stroke="#9B8EC4" stroke-width="0.75" fill="none" stroke-linecap="round"/>
+        <!-- stars -->
+        <circle cx="28" cy="22" r="1.5" fill="#C4BADE"/>
+        <circle cx="62" cy="18" r="1" fill="#C4BADE"/>
+        <circle cx="20" cy="55" r="1" fill="#C4BADE"/>
+        <circle cx="68" cy="60" r="1.5" fill="#C4BADE"/>
+        <text x="45" y="75" text-anchor="middle" font-family="Georgia" font-size="7" fill="#9B8EC4" font-style="italic">cosmic</text>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="task-num">11 · supplements</p>
+      <p class="task-title">Cosmic Nootropics</p>
+      <p class="task-desc">order refills of nootropic stacks</p>
+      <span class="task-target">→ cosmicnootropic.com</span>
+    </div>
+  </div>
+
+  <!-- 12. Lock & Leave -->
+
+  <div class="card" id="c12">
+    <div class="card-visual theme-amber">
+      <button class="done-check" onclick="toggle('c12', this)">
+        <svg class="checkmark" viewBox="0 0 11 9" fill="none">
+          <polyline points="1,4.5 4,7.5 10,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
+        <!-- lock icon -->
+        <rect x="30" y="42" width="30" height="24" rx="3" fill="#F0E6CE" stroke="#C4A882" stroke-width="1"/>
+        <path d="M36 42 Q36 28 45 28 Q54 28 54 42" stroke="#C4A882" stroke-width="1" fill="none"/>
+        <circle cx="45" cy="54" r="3" stroke="#C4A882" stroke-width="1" fill="none"/>
+        <line x1="45" y1="57" x2="45" y2="61" stroke="#C4A882" stroke-width="1" stroke-linecap="round"/>
+        <text x="45" y="80" text-anchor="middle" font-family="Georgia" font-size="7" fill="#B5956A" font-style="italic">move out</text>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="task-num">12 · storage</p>
+      <p class="task-title">Lock & Leave move-out</p>
+      <p class="task-desc">call / visit · move out of<br>units 1186 + 2060<br>pay March only · remove April fees</p>
+      <span class="task-target">→ units 1186 & 2060</span>
+    </div>
+  </div>
+
+  <!-- 13. ZocDoc Psychiatrist -->
+
+  <div class="card" id="c13">
+    <div class="card-visual theme-lavender">
+      <button class="done-check" onclick="toggle('c13', this)">
+        <svg class="checkmark" viewBox="0 0 11 9" fill="none">
+          <polyline points="1,4.5 4,7.5 10,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
+        <!-- calendar / appointment -->
+        <rect x="22" y="28" width="46" height="38" rx="3" fill="#f0edf8" stroke="#9B8EC4" stroke-width="1"/>
+        <line x1="22" y1="38" x2="68" y2="38" stroke="#9B8EC4" stroke-width="0.75"/>
+        <rect x="33" y="22" width="6" height="12" rx="2" fill="#e4dff0" stroke="#9B8EC4" stroke-width="0.75"/>
+        <rect x="51" y="22" width="6" height="12" rx="2" fill="#e4dff0" stroke="#9B8EC4" stroke-width="0.75"/>
+        <!-- cross / medical -->
+        <line x1="45" y1="46" x2="45" y2="58" stroke="#9B8EC4" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="39" y1="52" x2="51" y2="52" stroke="#9B8EC4" stroke-width="1.5" stroke-linecap="round"/>
+        <text x="45" y="78" text-anchor="middle" font-family="Georgia" font-size="7" fill="#9B8EC4" font-style="italic">zocdoc</text>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="task-num">13 · health</p>
+      <p class="task-title">ZocDoc psychiatrist</p>
+      <p class="task-desc">book appt via ZocDoc<br>for Adderall Rx refills</p>
+      <span class="task-target">→ ZocDoc · psychiatrist</span>
+    </div>
+  </div>
+
+</div>
+
+<footer><p>13 tasks · pre-departure · LA</p></footer>
+
+<!-- ── SCHEDULE SECTION ── -->
+
+<style>
+  .schedule-section {
+    max-width: 700px;
+    margin: 72px auto 0;
+  }
+
+  .schedule-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .schedule-header .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--dusty);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .schedule-header h2 {
+    font-size: clamp(28px, 6vw, 48px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--dark);
+    line-height: 1.1;
+  }
+  .schedule-header .sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--sage);
+    letter-spacing: 0.2em;
+    margin-top: 10px;
+    text-transform: uppercase;
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 24px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--warm), var(--light-sage));
+  }
+
+  .day-block {
+    position: relative;
+    margin-bottom: 20px;
+    animation: fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  .day-block:nth-child(1) { animation-delay: 0.04s; }
+  .day-block:nth-child(2) { animation-delay: 0.08s; }
+  .day-block:nth-child(3) { animation-delay: 0.12s; }
+  .day-block:nth-child(4) { animation-delay: 0.16s; }
+  .day-block:nth-child(5) { animation-delay: 0.20s; }
+  .day-block:nth-child(6) { animation-delay: 0.24s; }
+  .day-block:nth-child(7) { animation-delay: 0.28s; }
+  .day-block:nth-child(8) { animation-delay: 0.32s; }
+  .day-block:nth-child(9) { animation-delay: 0.36s; }
+
+  /* Dot on timeline */
+  .day-dot {
+    position: absolute;
+    left: -21px;
+    top: 16px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--warm);
+    border: 1.5px solid var(--cream);
+    box-shadow: 0 0 0 1px var(--warm);
+  }
+  .day-dot.depart { background: var(--sage); box-shadow: 0 0 0 1px var(--sage); }
+  .day-dot.blocked { background: var(--dusty); box-shadow: 0 0 0 1px var(--dusty); }
+  .day-dot.buffer { background: var(--light-sage); box-shadow: 0 0 0 1px var(--dusty); }
+
+  .day-card {
+    background: white;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s ease;
+  }
+  .day-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.09); }
+
+  .day-card-header {
+    padding: 14px 18px 12px;
+    border-bottom: 1px solid #f0ece6;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  .day-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--dusty);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .day-title {
+    font-size: 17px;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--dark);
+    flex: 1;
+  }
+
+  .day-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    padding: 2px 8px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .badge-online  { background: var(--light-sage); color: var(--accent); }
+  .badge-inperson{ background: #f0e8d8; color: var(--warm-brown, #8C6E52); }
+  .badge-blocked { background: #f0ece6; color: var(--dusty); }
+  .badge-depart  { background: #2A2A25; color: #F5F0E8; }
+  .badge-buffer  { background: var(--light-sage); color: var(--dusty); }
+  .badge-mixed   { background: #eef1ee; color: var(--sage); }
+
+  .day-tasks {
+    padding: 12px 18px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .day-task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--dark);
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+  }
+
+  .day-task-item .bullet {
+    color: var(--warm);
+    margin-top: 1px;
+    flex-shrink: 0;
+    font-size: 10px;
+  }
+  .day-task-item.blocked-item .bullet { color: var(--dusty); }
+  .day-task-item .time-tag {
+    color: var(--dusty);
+    font-size: 8px;
+    background: #f8f4ee;
+    padding: 1px 6px;
+    border-radius: 2px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .day-note {
+    padding: 0 18px 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 8.5px;
+    color: var(--dusty);
+    font-style: italic;
+    letter-spacing: 0.05em;
+    line-height: 1.5;
+  }
+
+  /* Depart card special */
+  .day-card.depart-card {
+    background: var(--dark);
+  }
+  .day-card.depart-card .day-card-header {
+    border-bottom-color: rgba(255,255,255,0.08);
+  }
+  .day-card.depart-card .day-date { color: rgba(245,240,232,0.45); }
+  .day-card.depart-card .day-title { color: #F5F0E8; }
+  .day-card.depart-card .day-task-item { color: rgba(245,240,232,0.7); }
+  .day-card.depart-card .bullet { color: var(--warm); }
+  .day-card.depart-card .day-note { color: rgba(245,240,232,0.35); }
+
+  .sched-footer {
+    text-align: center;
+    margin-top: 48px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--dusty);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding-bottom: 40px;
+  }
+</style>
+
+<div class="schedule-section">
+  <div class="schedule-header">
+    <p class="eyebrow">april 2 – 10</p>
+    <h2>the plan</h2>
+    <div class="divider"></div>
+    <p class="sub">8 days · LA/OC · depart april 10</p>
+  </div>
+
+  <div class="timeline">
+
+```
+<!-- April 2 -->
+<div class="day-block">
+  <div class="day-dot blocked"></div>
+  <div class="day-card">
+    <div class="day-card-header">
+      <span class="day-date">apr 2 · wed · today</span>
+      <span class="day-title">SD day — mostly blocked</span>
+      <span class="day-badge badge-blocked">blocked pm</span>
+    </div>
+    <div class="day-tasks">
+      <div class="day-task-item"><span class="bullet">◦</span><span class="time-tag">morning</span><span>ZocDoc psychiatrist — online visit</span></div>
+      <div class="day-task-item"><span class="bullet">◦</span><span class="time-tag">morning</span><span>Order Pure Encapsulations, Oriveda, Cosmic Nootropics</span></div>
+      <div class="day-task-item"><span class="bullet">◦</span><span class="time-tag">morning</span><span>Call SNAP office · reclaim EBT funds</span></div>
+      <div class="day-task-item"><span class="bullet">◦</span><span class="time-tag">morning</span><span>Call BOA · start dispute escalation</span></div>
+      <div class="day-task-item"><span class="bullet">◦</span><span class="time-tag">morning</span><span>Book Genius Bar appt for iPhone Air screen repair</span></div>
+      <div class="day-task-item"><span class="bullet">◦</span><span class="time-tag">morning</span><span>Schedule MDRepairs shipment for iPhone 16</span></div>
+      <div class="day-task-item blocked-item"><span class="bullet">—</span><span class="time-tag">~11:30am</span><span>Leave Newport Beach → San Diego (~1.5 hrs)</span></div>
+      <div class="day-task-item blocked-item"><span class="bullet">—</span><span class="time-tag">2:00pm</span><span>SD appointment (2–3 hrs blocked)</span></div>
+      <div class="day-task-item"><span class="bullet">◦</span><span class="time-tag">evening</span><span>Follow up on BOA dispute · confirm ZocDoc appt</span></div>
+    </div>
+    <p class="day-note">drive Newport Beach → SD · ~85 miles · leave by 11:30 to arrive with buffer</p>
+  </div>
+</div>
+
+<!-- April 4 -->
+<div class="day-block">
+  <div class="day-dot"></div>
+  <div class="day-card">
+    <div class="day-card-header">
+      <span class="day-date">apr 3 · thu</span>
+      <span class="day-title">Banks + Pharmacy</span>
+      <span class="day-badge badge-inperson">in person</span>
+    </div>
+    <div class="day-tasks">
+      <div class="day-task-item"><span class="bullet">◦</span><span>BOA branch — escalate dispute in person</span></div>
+      <div class="day-task-item"><span class="bullet">◦</span><span>Wells Fargo branch — obtain letter of non-deposit / attest check was never deposited</span></div>
+      <div class="day-task-item"><span class="bullet">◦</span><span>Chase branch — deposit check · increase accounts balances</span></div>
+      <div class="day-task-item"><span class="bullet">◦</span><span>Costco pharmacy — pick up Adderall IR Rx</span></div>
+      <div class="day-task-item"><span class="bullet">◦</span><span>Walgreens — pick up Adderall IR Rx</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- April 5 -->
+<div class="day-block">
+  <div class="day-dot"></div>
+  <div class="day-card">
+    <div class="day-card-header">
+      <span class="day-date">apr 4 · fri</span>
+      <span class="day-title">Apple + Devices</span>
+      <span class="day-badge badge-inperson">in person</span>
+    </div>
+    <div class="day-tasks">
+      <div class="day-task-item"><span class="bullet">◦</span><span>Apple Store — iPhone Air screen repair</span></div>
+      <div class="day-task-item"><span class="bullet">◦</span><span>Ship iPhone 16 to MDRepairs (UPS / FedEx drop-off)</span></div>
+      <div class="day-task-item"><span class="bullet">◦</span><span>Follow up on BOA dispute status</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- April 6 -->
+<div class="day-block">
+  <div class="day-dot"></div>
+  <div class="day-card">
+    <div class="day-card-header">
+      <span class="day-date">apr 5 · sat</span>
+      <span class="day-title">Health + Beauty</span>
+      <span class="day-badge badge-mixed">mixed</span>
+    </div>
+    <div class="day-tasks">
+      <div class="day-task-item"><span class="bullet">◦</span><span>ZocDoc psychiatrist appointment</span></div>
+      <div class="day-task-item"><span class="bullet">◦</span><span>Hair appointment — extensions / styling</span></div>
+      <div class="day-task-item"><span class="bullet">◦</span><span>Pick up iPhone Air from Apple Store (if same-day repair)</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- April 7 -->
+<div class="day-block">
+  <div class="day-dot"></div>
+  <div class="day-card">
+    <div class="day-card-header">
+      <span class="day-date">apr 6 · sun</span>
+      <span class="day-title">Storage day</span>
+      <span class="day-badge badge-inperson">in person</span>
+    </div>
+    <div class="day-tasks">
+      <div class="day-task-item"><span class="bullet">◦</span><span>ExtraSpace OC — move / consolidate units</span></div>
+      <div class="day-task-item"><span class="bullet">◦</span><span>Lock & Leave OC — move / consolidate items · move out units 1186 + 2060</span></div>
+      <div class="day-task-item"><span class="bullet">◦</span><span>Confirm March-only rent · request April fees removal</span></div>
+      <div class="day-task-item"><span class="bullet">◦</span><span>ExtraSpace DTLA — vacate unit A2023 · N Main location</span></div>
+      <div class="day-task-item"><span class="bullet">◦</span><span>Sell iPhone Air (list on marketplace or trade-in)</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- April 8 -->
+<div class="day-block">
+  <div class="day-dot buffer"></div>
+  <div class="day-card">
+    <div class="day-card-header">
+      <span class="day-date">apr 7 · mon</span>
+      <span class="day-title">Buffer + overflow</span>
+      <span class="day-badge badge-buffer">buffer</span>
+    </div>
+    <div class="day-tasks">
+      <div class="day-task-item"><span class="bullet">◦</span><span>Any unfinished tasks from prior days</span></div>
+      <div class="day-task-item"><span class="bullet">◦</span><span>Follow up BOA dispute · EBT · supplement orders</span></div>
+      <div class="day-task-item"><span class="bullet">◦</span><span>Pack · organize · prep for departure</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- April 9 -->
+<div class="day-block">
+  <div class="day-dot buffer"></div>
+  <div class="day-card">
+    <div class="day-card-header">
+      <span class="day-date">apr 8 · tue</span>
+      <span class="day-title">Final day</span>
+      <span class="day-badge badge-buffer">wind down</span>
+    </div>
+    <div class="day-tasks">
+      <div class="day-task-item"><span class="bullet">◦</span><span>Loose ends + final confirmations only</span></div>
+      <div class="day-task-item"><span class="bullet">◦</span><span>Pack · rest · prepare for early departure</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- April 10 -->
+<div class="day-block">
+  <div class="day-dot depart"></div>
+  <div class="day-card depart-card">
+    <div class="day-card-header">
+      <span class="day-date">apr 10 · thu</span>
+      <span class="day-title">Depart ✈</span>
+      <span class="day-badge badge-depart">departure</span>
+    </div>
+    <div class="day-tasks">
+      <div class="day-task-item"><span class="bullet">◦</span><span>LA → Doha</span></div>
+    </div>
+    <p class="day-note">you've got this · everything is handled · safe travels</p>
+  </div>
+</div>
+```
+
+  </div><!-- end timeline -->
+
+  <div class="sched-footer">
+    <p>8 days · 13 tasks · april 2 → 10</p>
+  </div>
+</div>
+
+<script>
+  const total = 13;
+
+  function toggle(cardId, btn) {
+    const card = document.getElementById(cardId);
+    btn.classList.toggle('checked');
+    card.classList.toggle('done');
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const done = document.querySelectorAll('.done-check.checked').length;
+    document.getElementById('progressFill').style.width = (done / total * 100) + '%';
+    document.getElementById('progressLabel').textContent = done + ' / ' + total + ' done';
+  }
+
+  updateProgress();
+</script>
+
+</body>
+</html>
